@@ -10,40 +10,52 @@ class TrainingSet:
     count = 0
     width = 0
     height = 0
-    pics = []
+    class_count = 10
 
     def __init__(self):
-        fimg = open(image_file, "rb")
-        header = fimg.read(16)
+        f = open(image_file, "rb")
+        header = f.read(16)
         header = struct.unpack(">IIII", header)
         self.count = header[1]
         self.width = header[2]
         self.height = header[3]
-        pics = np.fromfile(fimg, dtype=np.ubyte, count=self.width * self.height * self.count)
-        fimg.close()
-        self.pics = pics.reshape(self.count, self.width, self.height)
+        self.pics = np.fromfile(f, dtype=np.ubyte, count=self.width * self.height * self.count)
+        f.close()
+        self.pics = self.pics.reshape(self.count, self.width, self.height)
+        f = open(label_file, "rb")
+        f.read(8)
+        self.labels = np.fromfile(f, dtype=np.ubyte, count=self.count)
+        print "loaded " + str(self.count)
 
     def get_pic(self, index):
         return self.pics[index]
 
+    def get_label(self, index):
+        return self.labels[index]
 
+xx = np.ndarray((60000,10,748))
+
+
+exit()
 # W[10*width*height] dot img[width*height] + bias[10]
-class Classifier:
-    self.class_count = 10
 
-    def __init__(self, training_set):
-        self.W = np.random.rand(training_set.width * training_set.height * class_count)
-        print self.W
-
-    def score(self, img_idx):
+ts = TrainingSet()
+bias = np.zeros(ts.class_count)
+w = np.random.rand(ts.width * ts.height * ts.class_count).reshape(ts.class_count, ts.width * ts.height)
 
 
+def score(idx):
+    return w.dot(ts.get_pic(idx).flatten()) + bias
 
-x = TrainingSet()
+
+def loss(scores, idx):
+    margins = np.maximum(0,scores-scores[idx]+1)
+    margins[idx] = 0
+    return np.sum(margins)
+
+
+print ts.get_label(0)
 plt.gray()
-for i in range(x.count):
-    pic = x.get_pic(i)
-    pic = pic / 255.0
-    print pic
-    plt.imshow(pic)
-    plt.show()
+
+s = score(0)
+print s, loss(s,0)
