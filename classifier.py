@@ -9,13 +9,14 @@ class Classifier:
         self.regularization_strength = regularization_strength
 
     def regularization_l2(self, w, strength):
-        return np.sum(w ** 2) * strength
+        weights = w[:,:2]
+        return np.sum(weights ** 2) * strength
 
     def score(self, w, x):
         return w.dot(x)
 
     def loss_softmax(self, s, label):
-        return -np.log10(np.exp(s[label]) / np.sum(np.exp(s)))
+        return -np.log(np.exp(s[label]) / np.sum(np.exp(s)))
 
     def loss_i(self, s, i):  # loss for score "s" against label "i"
         return self.loss_softmax(s, i)
