@@ -45,4 +45,5 @@ class Classifier:
             s = self.score(w, self.examples[i])
             li = self.loss_i(s, self.labels[i])
             loss += li
+#        print "mean loss {1} \nreg loss {0}".format(self.regularization_l2(w, self.regularization_strength),loss / len(self.examples))
         return loss / len(self.examples) +self.regularization_l2(w, self.regularization_strength)
