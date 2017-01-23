@@ -9,7 +9,7 @@ class Classifier:
         self.regularization_strength = regularization_strength
 
     def regularization_l2(self, w, strength):
-        weights = w[:,:2]
+        weights = w[:, :2]
         return np.sum(weights ** 2) * strength
 
     def score(self, w, x):
@@ -21,10 +21,10 @@ class Classifier:
     def loss_i(self, s, i):  # loss for score "s" against label "i"
         return self.loss_softmax(s, i)
 
-    def update(self):
+    def analistic_gradient(self, w):
         pass
 
-    def num_gradient(self, w, h=0.00001):
+    def numercical_gradient(self, w, h=0.00001):
         gradient = np.zeros(w.shape)
         loss = self.full_loss(w)
         it = np.nditer(w, flags=['multi_index'], op_flags=['readwrite'])
@@ -45,5 +45,5 @@ class Classifier:
             s = self.score(w, self.examples[i])
             li = self.loss_i(s, self.labels[i])
             loss += li
-#        print "mean loss {1} \nreg loss {0}".format(self.regularization_l2(w, self.regularization_strength),loss / len(self.examples))
-        return loss / len(self.examples) +self.regularization_l2(w, self.regularization_strength)
+        #        print "mean loss {1} \nreg loss {0}".format(self.regularization_l2(w, self.regularization_strength),loss / len(self.examples))
+        return loss / len(self.examples) + self.regularization_l2(w, self.regularization_strength)
