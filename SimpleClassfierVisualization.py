@@ -51,6 +51,7 @@ def update(frame):
     global w
     step = 0.1
     gradient = cif.numercical_gradient(w)
+    print gradient
     for wl, l in zip(w, lines):
         slope = wl[0] / wl[1]
         l.set_data([1, -1], [-slope * 1 - wl[2] / wl[1], -slope * -1 - wl[2] / wl[1]])
@@ -58,14 +59,9 @@ def update(frame):
     return lines + [scat, ]
 
 
-h = 0.00001
-w = np.array([[1+h, 2, 0], [2, -4, 0.5], [3, -1, -.5]])
-a = cif.full_loss(w)
-w = np.array([[1, 2, 0], [2, -4, 0.5], [3, -1, -.5]])
-b = cif.full_loss(w)
-print "f(x+h): {0} - f(x) : {1} = {2}".format(a, b, (a - b) / h)
+print cif.numercical_gradient(w)
 
-#ani = FuncAnimation(fig, update, interval=1, frames=None, init_func=init, blit=False)
+ani = FuncAnimation(fig, update, interval=100, frames=None, init_func=init, blit=False)
 #update(None)
 
 plt.show()
