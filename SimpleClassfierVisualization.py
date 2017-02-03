@@ -60,8 +60,9 @@ def update(frame):
 
 
 print cif.numercical_gradient(w)
-
-ani = FuncAnimation(fig, update, interval=100, frames=None, init_func=init, blit=False)
+print "======"
+print cif.analistic_gradient(w)
+# ani = FuncAnimation(fig, update, interval=100, frames=None, init_func=init, blit=False)
 #update(None)
 
-plt.show()
+#plt.show()
